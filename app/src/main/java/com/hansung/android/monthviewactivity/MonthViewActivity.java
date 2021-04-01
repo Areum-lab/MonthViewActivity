@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -75,6 +77,7 @@ public class MonthViewActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
+
         });
 
         Button nexbtn = findViewById(R.id.monthNext);
@@ -94,6 +97,7 @@ public class MonthViewActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
+
         });
 
 
@@ -108,5 +112,16 @@ public class MonthViewActivity extends AppCompatActivity {
         GridView gridview = (GridView) findViewById(R.id.gridview);
         // 어댑터를 GridView 객체에 연결
         gridview.setAdapter(adapt);
+
+        // 항목 클릭 이벤트 처리
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                Toast.makeText(MonthViewActivity.this,
+                        year + "." + (month + 1) + "." + date[position],
+                        Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
     }
 }
