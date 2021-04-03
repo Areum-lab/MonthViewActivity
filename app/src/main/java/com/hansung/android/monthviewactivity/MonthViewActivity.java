@@ -36,22 +36,19 @@ public class MonthViewActivity extends AppCompatActivity {
 
         //현재 년,월에 맞는 캘린더 객체 생성
         Calendar sDay = Calendar.getInstance(); //시작일
-        Calendar eDay = Calendar.getInstance(); //끝일
         sDay.set(year,month,1); //시작일은 현재 년,월의 1일로 설정
-        eDay.set(year,month+1,1); //끝일은 현재 년,다음달 1일로 설정
-        eDay.add(Calendar.DATE, -1); //다음 월 1일에서 -1을 하면 현재달의 마지막 날이 됨
 
-        int START_DAY_OF_WEEK = sDay.get(Calendar.DAY_OF_WEEK); //첫번째 요일이 무슨 요일인지 알아냄
-        int END_DAY = eDay.get(Calendar.DATE); //eDay에 저장된 마지막날의 날짜를 알아냄
+        int START_DAY_OF_WEEK = sDay.get(Calendar.DAY_OF_WEEK); //시작일의 요일(1일의 요일)을 알아냄
+        int END_DAY = sDay.getActualMaximum(Calendar.DATE); //현재 월의 마지막 날짜를 알아냄
 
         String[] date = new String[6*7]; //6*7사이즈의 String형 배열을 선언
 
         //배열에 요일 입력
         for(int i=0, n=1; i<date.length; i++){
-            if(i < START_DAY_OF_WEEK-1)  //date배열에 첫번째 요일까지 공백으로 채움
+            if(i < START_DAY_OF_WEEK-1)  //date배열에 첫번째 요일 전까지 공백으로 채움
                 date[i] = "";            //DAY_OF_WEEK는 일요일:1 ~ 토요일:7로 결과가 나옴 -> START_DAT_OF_WEEK에서 -1을 해준 값 전까지가 공백
 
-            else if((i >= START_DAY_OF_WEEK-1) && (n <= END_DAY)) {//START_DAY_OF_WEEK에서 -1해준 값부터 배열은 시작함
+            else if((i >= START_DAY_OF_WEEK-1) && (n <= END_DAY)) {//START_DAY_OF_WEEK에서 -1해준 값부터 배열 시작
                 date[i] = n+"";                                    //n값은 배열에 날짜를 입력하기위한 변수이고, 1일부터 END_DAY 즉, 마지막 날짜까지 배열에 입력
                 n++;
             }
@@ -106,12 +103,10 @@ public class MonthViewActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1,
                 date);
 
-
         // gridview id를 가진 화면 레이아웃에 정의된 GridView 객체 로딩
         GridView gridview = (GridView) findViewById(R.id.gridview);
         //어댑터를 GridView 객체에 연결
         gridview.setAdapter(adapt);
-
 
         //항목 클릭 이벤트 처리
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
