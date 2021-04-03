@@ -46,19 +46,18 @@ public class MonthViewActivity extends AppCompatActivity {
 
         String[] date = new String[6*7]; //6*7사이즈의 String형 배열을 선언
 
+        //배열에 요일 입력
         for(int i=0, n=1; i<date.length; i++){
-            //date배열에 첫번째 요일까지 공백으로 채움
-            //DAY_OF_WEEK는 일요일:1 ~ 토요일:7로 결과가 나옴 -> START_DAT_OF_WEEK에서 -1을 해준 값 전까지가 공백
-            if(i < START_DAY_OF_WEEK-1)
-                date[i] = "";
-            //START_DAY_OF_WEEK에서 -1해준 값부터 배열은 시작함
-            //n값은 배열에 날짜를 입력하기위한 변수이고, 1일부터 END_DAY 즉, 마지막 날짜까지 배열에 입력
-            else if((i >= START_DAY_OF_WEEK-1) && (n <= END_DAY)) {
-                date[i] = n+"";
+            if(i < START_DAY_OF_WEEK-1)  //date배열에 첫번째 요일까지 공백으로 채움
+                date[i] = "";            //DAY_OF_WEEK는 일요일:1 ~ 토요일:7로 결과가 나옴 -> START_DAT_OF_WEEK에서 -1을 해준 값 전까지가 공백
+
+            else if((i >= START_DAY_OF_WEEK-1) && (n <= END_DAY)) {//START_DAY_OF_WEEK에서 -1해준 값부터 배열은 시작함
+                date[i] = n+"";                                    //n값은 배열에 날짜를 입력하기위한 변수이고, 1일부터 END_DAY 즉, 마지막 날짜까지 배열에 입력
                 n++;
             }
-            else                //이 전까지의 배열은 (START_DAY_OF_WEEK-1)+(END_DAY-1)까지 채워져있으니까
-                date[i] = "";   //START_DAY_OF_WEEK+END_DAY-1부터 배열의 마지막까지 공백으로 채워준다.
+
+            else                    //이 전까지의 배열은 (START_DAY_OF_WEEK-1)+(END_DAY-1)까지 채워져있으니까
+                date[i] = "";       //START_DAY_OF_WEEK+END_DAY-1부터 배열의 마지막까지 공백으로 채워줌.
         }
 
         TextView yearmonth = findViewById(R.id.YearMonth); //날짜를 쓰는 yearmonth 텍스트 뷰
@@ -69,9 +68,9 @@ public class MonthViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MonthViewActivity.class);
-                if(month-1 == -1){
-                    intent.putExtra("year",year-1);
-                    intent.putExtra("month",11);
+                if(month == 0){ //현재 month값이 0(1월)일 때
+                    intent.putExtra("year",year-1); //이전년으로
+                    intent.putExtra("month",11); //12월로
                 }
                 else {
                     intent.putExtra("year", year);
@@ -87,9 +86,9 @@ public class MonthViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MonthViewActivity.class);
-                if(month+1 == 12){
-                    intent.putExtra("year",year+1);
-                    intent.putExtra("month",0);
+                if(month == 11){ //현재 month값이 11(12월)일 때
+                    intent.putExtra("year",year+1); //다음년으로
+                    intent.putExtra("month",0); //1월로
                 }
                 else {
                     intent.putExtra("year", year);
@@ -103,7 +102,9 @@ public class MonthViewActivity extends AppCompatActivity {
         //어댑터 준비 (date 배열 객체 이용, simple_list_item_1 리소스 사용)
         ArrayAdapter<String> adapt
                 = new ArrayAdapter<String>(
-                this, android.R.layout.simple_list_item_1, date);
+                this,
+                android.R.layout.simple_list_item_1,
+                date);
 
 
         // gridview id를 가진 화면 레이아웃에 정의된 GridView 객체 로딩
